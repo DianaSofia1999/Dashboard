@@ -210,7 +210,6 @@ rope==0.22.0
 Rtree==0.9.7
 scikit-image==0.19.2
 scikit-learn==1.0.2
-scikit-learn-intelex==2021.20220215.102710
 scipy==1.7.3
 seaborn==0.11.2
 Send2Trash==1.8.0
