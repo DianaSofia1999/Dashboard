@@ -27,7 +27,7 @@ df_errors2 = df_errors2.set_index('Forecasting Method', drop=True)
 df_pred = pd.read_csv('df_pred.csv')
 
 
-# Calculate mean variable values of all hours in a day
+# Calculate daily mean of variables
 df_mean = df
 df_mean['Date'] = pd.to_datetime(df_mean['Date'], dayfirst=True)
 df_mean = df_mean.set_index('Date')
@@ -66,9 +66,9 @@ app.layout = html.Div([
     ], style={'textAlign': 'center'}),  
     
     dcc.Tabs(id='tabs', value='tab-1', children=[
-        dcc.Tab(label='Data', value='tab-1'),
+        dcc.Tab(label='Raw variables', value='tab-1'),
         dcc.Tab(label='Forecast', value='tab-2'),
-        dcc.Tab(label='Comparison', value='tab-3'),
+        dcc.Tab(label='Metrics comparison', value='tab-3'),
     ]),
     html.Div(id='tabs-content')      
 ])
@@ -98,7 +98,7 @@ def render_content(tab):
             dcc.Dropdown(
                 id='variables',
                 value=0,
-                # One chooses the most relevant variables used in the model to represent
+                # Variables used in project 1
                 options=[{'value': 0, 'label': 'Power (kWh)'},
                          {'value': 1, 'label': 'Temperature (\N{DEGREE SIGN}C)'},
                          {'value': 2, 'label': 'Solar Radiation (W/m\u00b2)'},
@@ -347,7 +347,7 @@ def day_type(mode):
                 html.Div([html.Div([dcc.Graph(
                      id='bar',
                      figure = px.bar(s, x='Day Type', y='Day Count',
-                         title="Day Type Civil Count at Building from January to March 2019",
+                         title="Day Type Count at Civil Building from January to March 2019",
                          opacity=0.5, color_discrete_sequence=['orange'])        
                      ),                
                ], style=dict(width='50%', marginLeft= 'auto', marginRight= 'auto')), 
@@ -372,7 +372,7 @@ def prediction(mode):
                    id='LR',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['LR'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Linear Regression'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Linear Regression'}
                        }
                    ), 
                dcc.Graph(
@@ -398,7 +398,7 @@ def prediction(mode):
                    id='SVR',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['SVR'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Support Vector Regression'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Support Vector Regression'}
                        }
                    ),               
                dcc.Graph(
@@ -424,7 +424,7 @@ def prediction(mode):
                    id='DT',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['DT'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Decision Tree Regressor'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Decision Tree Regressor'}
                        }
                    ),               
                dcc.Graph(
@@ -450,7 +450,7 @@ def prediction(mode):
                    id='RF',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['RF'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Random Forest Regressor'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Random Forest Regressor'}
                        }
                    ),               
                dcc.Graph(
@@ -476,7 +476,7 @@ def prediction(mode):
                    id='RF_unif',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['RF_unif'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Random Forest Uniformized Data'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Random Forest Uniformized Data'}
                        }
                    ),               
                dcc.Graph(
@@ -502,7 +502,7 @@ def prediction(mode):
                    id='GB',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['GB'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Gradient Boosting'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Gradient Boosting'}
                        }
                    ),
                dcc.Graph(
@@ -528,7 +528,7 @@ def prediction(mode):
                    id='XGB',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['XGB'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Extreme Gradient Boosting'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Extreme Gradient Boosting'}
                        }
                    ),               
                dcc.Graph(
@@ -554,7 +554,7 @@ def prediction(mode):
                    id='BT',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['BT'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Bootstrapping'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Bootstrapping'}
                        }
                    ),               
                dcc.Graph(
@@ -580,7 +580,7 @@ def prediction(mode):
                    id='NN',
                    figure={
                        'data': [{'x': df_pred['Date'], 'y': df_pred['data'], 'type': 'line', 'name': 'Data'},{'x': df_pred['Date'], 'y': df_pred['NN'], 'type': 'line', 'name': 'Prediction'}],
-                       'layout':{'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Neural Networks'}
+                       'layout':{'xaxis': {'title':'Date'},'yaxis': {'title':'Power (kWh)'},'title': 'Power Prediction and Data from January to March 2019 - Neural Networks'}
                        }
                    ),               
                dcc.Graph(
