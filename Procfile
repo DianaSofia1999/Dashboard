@@ -1,2 +1,2 @@
   
-web: gunicorn app:server
+web: gunicorn import:server --timeout 60
