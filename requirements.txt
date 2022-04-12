@@ -1,5 +1,4 @@
 alabaster==0.7.12
-anaconda-project==0.10.2
 anyio==3.5.0
 appdirs==1.4.4
 argh==0.26.2
